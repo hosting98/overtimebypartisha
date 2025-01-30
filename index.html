@@ -1,32 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>overtime by partisha</title>
     <script>
-        // Dynamically get title and favicon from target site
-        fetch('https://overtimebypartisha.wordpress.com')
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                
-                // Set title
-                document.title = doc.title;
-                
-                // Set favicon
-                let favicon = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
-                if (favicon) {
-                    const newFavicon = document.createElement('link');
-                    newFavicon.rel = favicon.rel;
-                    newFavicon.href = favicon.href;
-                    document.head.appendChild(newFavicon);
-                } else {
-                    // Fallback to default favicon location
-                    const defaultFavicon = document.createElement('link');
-                    defaultFavicon.rel = 'icon';
-                    defaultFavicon.href = 'https://overtimebypartisha.wordpress.com/favicon.ico';
-                    document.head.appendChild(defaultFavicon);
-                }
-            });
+        // Set favicon from original site
+        (function() {
+            const favicon = document.createElement('link');
+            favicon.rel = 'icon';
+            favicon.href = 'https://overtimebypartisha.wordpress.com/favicon.ico';
+            
+            // Preload just in case
+            const preload = document.createElement('link');
+            preload.rel = 'preload';
+            preload.as = 'image';
+            preload.href = favicon.href;
+            
+            document.head.appendChild(preload);
+            document.head.appendChild(favicon);
+        })();
     </script>
     <style>
         * {
