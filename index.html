@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <link id="favicon" rel="icon" href="">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="iframe" src=""></iframe>
+    <script>
+        const baseWordPressUrl = "https://overtimebypartisha.wordpress.com";
+
+        // Extract the path from the current URL
+        const currentPath = window.location.pathname;
+        const iframe = document.getElementById("iframe");
+        iframe.src = `${baseWordPressUrl}${currentPath}`;
+
+        // Fetch metadata from the WordPress site
+        fetch(`${baseWordPressUrl}${currentPath}`)
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, "text/html");
+
+                // Update the site title
+                const title = doc.querySelector("title")?.innerText || "My Website";
+                document.title = title;
+
+                // Update the favicon
+                const favicon = doc.querySelector("link[rel='icon']")?.href || "";
+                if (favicon) {
+                    const faviconElement = document.getElementById("favicon");
+                    faviconElement.href = favicon;
+                }
+            })
+            .catch(err => console.error("Failed to fetch metadata:", err));
+    </script>
+</body>
+</html>
