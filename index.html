@@ -1,17 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Overtime by Partisha</title>
-    <link rel="icon" href="https://overtimebypartisha.wordpress.com/favicon.ico">
+    <script>
+        // Dynamically get title and favicon from target site
+        fetch('https://overtimebypartisha.wordpress.com')
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Set title
+                document.title = doc.title;
+                
+                // Set favicon
+                let favicon = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+                if (favicon) {
+                    const newFavicon = document.createElement('link');
+                    newFavicon.rel = favicon.rel;
+                    newFavicon.href = favicon.href;
+                    document.head.appendChild(newFavicon);
+                } else {
+                    // Fallback to default favicon location
+                    const defaultFavicon = document.createElement('link');
+                    defaultFavicon.rel = 'icon';
+                    defaultFavicon.href = 'https://overtimebypartisha.wordpress.com/favicon.ico';
+                    document.head.appendChild(defaultFavicon);
+                }
+            });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            overflow: hidden;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
-<body style="margin: 0; height: 100%; overflow: hidden;">
+<body>
     <iframe 
-        src="https://overtimebypartisha.wordpress.com/" 
-        style="border: none; width: 100%; height: 100%;"
-        title="overtime by partisha">
-    </iframe>
+        src="https://overtimebypartisha.wordpress.com" 
+        frameborder="0" 
+        scrolling="yes"
+        allowfullscreen
+    ></iframe>
 </body>
 </html>
